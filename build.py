@@ -23,7 +23,8 @@ except ImportError:
 
 # Configuration
 SITE_TITLE = "My Technical Blog"
-SITE_URL = "https://yourblog.com"
+SITE_URL = "https://tranhoangkhuongvn.github.io/my-blog"
+BASE_PATH = "/my-blog"  # For GitHub Pages subdirectory, use "" for root domain
 SITE_DESCRIPTION = "A blog about programming, mathematics, and technology"
 AUTHOR = "Your Name"
 
@@ -204,6 +205,7 @@ def generate_post_page(post, templates):
         title=f"{post.title} - {SITE_TITLE}",
         content=post_html,
         site_title=SITE_TITLE,
+        base_path=BASE_PATH,
         has_math='true' if post.has_math else 'false',
         has_mermaid='true' if post.has_mermaid else 'false'
     )
@@ -221,26 +223,27 @@ def generate_index_page(posts, templates):
     for post in posts[:5]:  # Show latest 5 posts
         post_html = f'''
         <article class="post-preview">
-            <h2><a href="/posts/{post.slug}.html">{post.title}</a></h2>
+            <h2><a href="{BASE_PATH}/posts/{post.slug}.html">{post.title}</a></h2>
             <time datetime="{post.date.isoformat() if post.date else ''}">{post.date.strftime('%B %d, %Y') if post.date else ''}</time>
             <p>{post.description}</p>
-            <a href="/posts/{post.slug}.html" class="read-more">Read more →</a>
+            <a href="{BASE_PATH}/posts/{post.slug}.html" class="read-more">Read more →</a>
         </article>
         '''
         post_list.append(post_html)
-    
+
     index_html = render_template(
         templates['index'],
         posts=''.join(post_list),
         site_title=SITE_TITLE,
         site_description=SITE_DESCRIPTION
     )
-    
+
     final_html = render_template(
         templates['base'],
         title=SITE_TITLE,
         content=index_html,
         site_title=SITE_TITLE,
+        base_path=BASE_PATH,
         has_math='false',
         has_mermaid='false'
     )
@@ -266,15 +269,16 @@ def generate_archive_page(posts, templates):
             date_str = post.date.strftime('%b %d')
             archive_html.append(
                 f'<li><span class="date">{date_str}</span> '
-                f'<a href="/posts/{post.slug}.html">{post.title}</a></li>'
+                f'<a href="{BASE_PATH}/posts/{post.slug}.html">{post.title}</a></li>'
             )
         archive_html.append('</ul>')
-    
+
     final_html = render_template(
         templates['base'],
         title=f"Archive - {SITE_TITLE}",
         content='\n'.join(archive_html),
         site_title=SITE_TITLE,
+        base_path=BASE_PATH,
         has_math='false',
         has_mermaid='false'
     )
@@ -382,6 +386,7 @@ def generate_site():
             title=f"{page.title} - {SITE_TITLE}",
             content=page_html,
             site_title=SITE_TITLE,
+            base_path=BASE_PATH,
             has_math='true' if page.has_math else 'false',
             has_mermaid='true' if page.has_mermaid else 'false'
         )
