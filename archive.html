@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archive - My Technical Blog</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css">
+
+    <!-- KaTeX CSS for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+          integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
+          crossorigin="anonymous">
+    
+    <!-- Highlight.js themes -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css" id="hljs-dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css" id="hljs-light" disabled>
+    
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="/my-blog/static/style.css">
+
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/my-blog/feed.xml">
+    
+    <!-- Theme initialization (prevents flash) -->
+    <script>
+        (function() {
+            const theme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="nav-container">
+            <div class="nav-brand">
+                <a href="/my-blog/">My Technical Blog</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/my-blog/">Home</a></li>
+                <li><a href="/my-blog/archive.html">Archive</a></li>
+                <li><a href="/my-blog/about.html">About</a></li>
+                <li><a href="/my-blog/feed.xml" class="rss-link">RSS</a></li>
+                <li>
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main class="main-content">
+        <h1>Archive</h1>
+<h2>2024</h2>
+<ul class="archive-list">
+<li><span class="date">Nov 04</span> <a href="/my-blog/posts/advanced-mathematics-with-katex.html">Advanced Mathematics with KaTeX</a></li>
+<li><span class="date">Nov 03</span> <a href="/my-blog/posts/building-a-static-site-generator-from-scratch.html">Building a Static Site Generator from Scratch</a></li>
+<li><span class="date">Nov 01</span> <a href="/my-blog/posts/understanding-big-o-notation-with-mathematical-proofs.html">Understanding Big O Notation with Mathematical Proofs</a></li>
+</ul>
+    </main>
+    
+    <footer class="site-footer">
+        <p>© 2024 My Technical Blog. Built with ❤️ and Python.</p>
+        <p class="footer-links">
+            <a href="https://github.com/yourusername">GitHub</a> •
+            <a href="https://twitter.com/yourusername">Twitter</a> •
+            <a href="/feed.xml">RSS Feed</a>
+        </p>
+    </footer>
+    
+    <!-- KaTeX JavaScript for math rendering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" 
+            integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" 
+            crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" 
+            integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" 
+            crossorigin="anonymous"></script>
+    
+    <!-- Mermaid for diagrams (only loaded if needed) -->
+    <script>
+        if (false === true) {
+            var script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js';
+            script.onload = function() {
+                mermaid.initialize({ 
+                    startOnLoad: true,
+                    theme: 'dark'
+                });
+            };
+            document.head.appendChild(script);
+        }
+    </script>
+    
+    <!-- Highlight.js for code blocks -->
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+    
+    <!-- Initialize KaTeX and highlight.js -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Initialize KaTeX if math is present
+            if (false === true || document.querySelector('.math')) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false},
+                        {left: "\\[", right: "\\]", display: true},
+                        {left: "\\(", right: "\\)", display: false}
+                    ],
+                    throwOnError: false,
+                    trust: true
+                });
+            }
+            
+            // Initialize syntax highlighting
+            hljs.highlightAll();
+        });
+        
+        // Theme toggle functionality
+        (function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const html = document.documentElement;
+            const hljsDark = document.getElementById('hljs-dark');
+            const hljsLight = document.getElementById('hljs-light');
+            
+            function setTheme(theme) {
+                html.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                
+                // Update highlight.js theme
+                if (theme === 'light') {
+                    hljsDark.disabled = true;
+                    hljsLight.disabled = false;
+                } else {
+                    hljsDark.disabled = false;
+                    hljsLight.disabled = true;
+                }
+                
+                // Update theme toggle button state
+                themeToggle.setAttribute('aria-label', 
+                    theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme');
+            }
+            
+            // Set initial theme
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            setTheme(savedTheme);
+            
+            // Toggle theme on button click
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                setTheme(newTheme);
+            });
+        })();
+    </script>
+</body>
+</html>

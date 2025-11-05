@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building a Static Site Generator from Scratch - My Technical Blog</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css">
+
+    <!-- KaTeX CSS for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+          integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
+          crossorigin="anonymous">
+    
+    <!-- Highlight.js themes -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css" id="hljs-dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css" id="hljs-light" disabled>
+    
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="/my-blog/static/style.css">
+
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/my-blog/feed.xml">
+    
+    <!-- Theme initialization (prevents flash) -->
+    <script>
+        (function() {
+            const theme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="nav-container">
+            <div class="nav-brand">
+                <a href="/my-blog/">My Technical Blog</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/my-blog/">Home</a></li>
+                <li><a href="/my-blog/archive.html">Archive</a></li>
+                <li><a href="/my-blog/about.html">About</a></li>
+                <li><a href="/my-blog/feed.xml" class="rss-link">RSS</a></li>
+                <li>
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main class="main-content">
+        <article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Building a Static Site Generator from Scratch</h1>
+        <div class="post-meta">
+            <time class="post-date">November 03, 2024</time>
+            <div class="post-tags"><span class="tag">python</span> <span class="tag">web-development</span> <span class="tag">tutorial</span></div>
+        </div>
+    </header>
+    
+    <div class="post-content">
+        <h1 id="building-a-static-site-generator-from-scratch">Building a Static Site Generator from Scratch</h1>
+<p>Static site generators (SSGs) have become increasingly popular for creating fast, secure websites. In this post, we'll explore how to build your own SSG from scratch, complete with support for Markdown, LaTeX math expressions, and Mermaid diagrams.</p>
+<h2 id="architecture-overview">Architecture Overview</h2>
+<p>A static site generator follows a simple pipeline:</p>
+<div class="mermaid">
+graph LR
+    A[Markdown Files] --> B[Parser]
+    B --> C[Template Engine]
+    C --> D[HTML Output]
+    E[Templates] --> C
+    F[Static Assets] --> G[Copy to Output]
+    D --> H[Complete Website]
+    G --> H
+</div>
+
+<h2 id="core-components">Core Components</h2>
+<h3 id="1-content-parser">1. Content Parser</h3>
+<p>The content parser reads Markdown files and extracts metadata from front matter:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">markdown</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ContentParser</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content_path</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">content_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raw_content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_content</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;---&#39;</span><span class="p">):</span>
+            <span class="c1"># Extract front matter</span>
+            <span class="n">parts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;---&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parse_frontmatter</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_content</span>
+
+        <span class="c1"># Convert Markdown to HTML</span>
+        <span class="n">md</span> <span class="o">=</span> <span class="n">markdown</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;extra&#39;</span><span class="p">,</span> <span class="s1">&#39;codehilite&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">html</span> <span class="o">=</span> <span class="n">md</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="2-template-engine">2. Template Engine</h3>
+<p>A simple template engine replaces placeholders with actual content:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TemplateEngine</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template_dir</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">template_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">template_dir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">templates</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_templates</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template_name</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="p">[</span><span class="n">template_name</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">context</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">template</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">{{{{</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="se">}}}}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">template</span>
+</code></pre></div>
+
+<h2 id="build-process-flow">Build Process Flow</h2>
+<p>The build process follows this sequence:</p>
+<div class="mermaid">
+sequenceDiagram
+    participant User
+    participant Builder
+    participant Parser
+    participant Template
+    participant FileSystem
+
+    User->>Builder: Run build command
+    Builder->>FileSystem: Clean output directory
+    Builder->>Parser: Load content files
+    Parser->>Parser: Parse Markdown & metadata
+    Parser-->>Builder: Return parsed content
+    Builder->>Template: Load templates
+    Builder->>Template: Render with content
+    Template-->>Builder: Return HTML
+    Builder->>FileSystem: Write HTML files
+    Builder->>FileSystem: Copy static assets
+    Builder-->>User: Build complete!
+</div>
+
+<h2 id="adding-math-support">Adding Math Support</h2>
+<p>To support LaTeX math expressions, we can integrate KaTeX or MathJax. Here's how we handle math delimiters:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">process_math</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process LaTeX math expressions in content.&quot;&quot;&quot;</span>
+    <span class="c1"># Handle display math $$...$$</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
+        <span class="sa">r</span><span class="s1">&#39;\$\$(.*?)\$\$&#39;</span><span class="p">,</span>
+        <span class="sa">r</span><span class="s1">&#39;&lt;div class=&quot;math display&quot;&gt;\1&lt;/div&gt;&#39;</span><span class="p">,</span>
+        <span class="n">content</span><span class="p">,</span>
+        <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Handle inline math $...$</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
+        <span class="sa">r</span><span class="s1">&#39;\$([^\$]+)\$&#39;</span><span class="p">,</span>
+        <span class="sa">r</span><span class="s1">&#39;&lt;span class=&quot;math inline&quot;&gt;\1&lt;/span&gt;&#39;</span><span class="p">,</span>
+        <span class="n">content</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">content</span>
+</code></pre></div>
+
+<p>Example math rendering: The quadratic formula is <span class="math math-inline">&#92;(x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}&#92;)</span>.</p>
+<h2 id="file-system-structure">File System Structure</h2>
+<p>Organize your SSG project like this:</p>
+<div class="codehilite"><pre><span></span><code>project/
+├── build.py           # Main generator script
+├── content/
+│   ├── posts/        # Blog posts
+│   └── pages/        # Static pages
+├── templates/        # HTML templates
+│   ├── base.html
+│   ├── post.html
+│   └── index.html
+├── static/          # CSS, JS, images
+│   └── style.css
+└── output/          # Generated site
+</code></pre></div>
+
+<h2 id="performance-optimization">Performance Optimization</h2>
+<p>For better performance, implement these optimizations:</p>
+<h3 id="1-incremental-builds">1. Incremental Builds</h3>
+<p>Only rebuild files that have changed:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">needs_rebuild</span><span class="p">(</span><span class="n">source_path</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if source file is newer than output.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">output_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="n">source_path</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_mtime</span> <span class="o">&gt;</span> <span class="n">output_path</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_mtime</span>
+</code></pre></div>
+
+<h3 id="2-parallel-processing">2. Parallel Processing</h3>
+<p>Use multiprocessing for faster builds:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">multiprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pool</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">build_site</span><span class="p">(</span><span class="n">content_files</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">Pool</span><span class="p">()</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">process_file</span><span class="p">,</span> <span class="n">content_files</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span>
+</code></pre></div>
+
+<h2 id="deployment-pipeline">Deployment Pipeline</h2>
+<p>Automate deployment with GitHub Actions:</p>
+<div class="mermaid">
+graph TD
+    A[Push to GitHub] --> B[GitHub Actions Triggered]
+    B --> C[Install Dependencies]
+    C --> D[Run Build Script]
+    D --> E[Generate Static Files]
+    E --> F{Tests Pass?}
+    F -->|Yes| G[Deploy to GitHub Pages]
+    F -->|No| H[Notify Error]
+    G --> I[Site Live!]
+</div>
+
+<h2 id="advanced-features">Advanced Features</h2>
+<h3 id="rss-feed-generation">RSS Feed Generation</h3>
+<p>Generate RSS feeds for your blog:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_rss</span><span class="p">(</span><span class="n">posts</span><span class="p">,</span> <span class="n">site_url</span><span class="p">):</span>
+    <span class="n">rss</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#39;</span><span class="p">]</span>
+    <span class="n">rss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&lt;rss version=&quot;2.0&quot;&gt;&#39;</span><span class="p">)</span>
+    <span class="n">rss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&lt;channel&gt;&#39;</span><span class="p">)</span>
+    <span class="n">rss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;title&gt;</span><span class="si">{</span><span class="n">site_title</span><span class="si">}</span><span class="s1">&lt;/title&gt;&#39;</span><span class="p">)</span>
+    <span class="n">rss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;link&gt;</span><span class="si">{</span><span class="n">site_url</span><span class="si">}</span><span class="s1">&lt;/link&gt;&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">post</span> <span class="ow">in</span> <span class="n">posts</span><span class="p">[:</span><span class="mi">10</span><span class="p">]:</span>  <span class="c1"># Latest 10 posts</span>
+        <span class="n">rss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&lt;item&gt;&#39;</span><span class="p">)</span>
+        <span class="n">rss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;title&gt;</span><span class="si">{</span><span class="n">post</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s1">&lt;/title&gt;&#39;</span><span class="p">)</span>
+        <span class="n">rss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;link&gt;</span><span class="si">{</span><span class="n">site_url</span><span class="si">}</span><span class="s1">/posts/</span><span class="si">{</span><span class="n">post</span><span class="o">.</span><span class="n">slug</span><span class="si">}</span><span class="s1">&lt;/link&gt;&#39;</span><span class="p">)</span>
+        <span class="n">rss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;pubDate&gt;</span><span class="si">{</span><span class="n">post</span><span class="o">.</span><span class="n">date</span><span class="si">}</span><span class="s1">&lt;/pubDate&gt;&#39;</span><span class="p">)</span>
+        <span class="n">rss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&lt;/item&gt;&#39;</span><span class="p">)</span>
+
+    <span class="n">rss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&lt;/channel&gt;&#39;</span><span class="p">)</span>
+    <span class="n">rss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&lt;/rss&gt;&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rss</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="sitemap-generation">Sitemap Generation</h3>
+<p>Help search engines index your site:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_sitemap</span><span class="p">(</span><span class="n">pages</span><span class="p">,</span> <span class="n">site_url</span><span class="p">):</span>
+    <span class="n">sitemap</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#39;</span><span class="p">]</span>
+    <span class="n">sitemap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&lt;urlset xmlns=&quot;http://www.sitemaps.org/schemas/sitemap/0.9&quot;&gt;&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">pages</span><span class="p">:</span>
+        <span class="n">sitemap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&lt;url&gt;&#39;</span><span class="p">)</span>
+        <span class="n">sitemap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;loc&gt;</span><span class="si">{</span><span class="n">site_url</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">page</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s1">&lt;/loc&gt;&#39;</span><span class="p">)</span>
+        <span class="n">sitemap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;lastmod&gt;</span><span class="si">{</span><span class="n">page</span><span class="o">.</span><span class="n">modified</span><span class="si">}</span><span class="s1">&lt;/lastmod&gt;&#39;</span><span class="p">)</span>
+        <span class="n">sitemap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&lt;/url&gt;&#39;</span><span class="p">)</span>
+
+    <span class="n">sitemap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&lt;/urlset&gt;&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sitemap</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="testing-your-generator">Testing Your Generator</h2>
+<p>Write tests to ensure reliability:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">unittest</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TestSSG</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_markdown_parsing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;# Hello</span><span class="se">\n</span><span class="s2">This is a test.&quot;</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="n">parse_markdown</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="s1">&#39;&lt;h1&gt;Hello&lt;/h1&gt;&#39;</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_template_rendering</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;Hello {{name}}!&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">render_template</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;World&#39;</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;Hello World!&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_front_matter_parsing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;---</span><span class="se">\n</span><span class="s2">title: Test</span><span class="se">\n</span><span class="s2">---</span><span class="se">\n</span><span class="s2">Content&quot;</span>
+        <span class="n">metadata</span><span class="p">,</span> <span class="n">body</span> <span class="o">=</span> <span class="n">parse_frontmatter</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span> <span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>Building your own static site generator is a rewarding project that teaches you about:</p>
+<ul>
+<li>File processing and I/O operations</li>
+<li>Template engines and rendering</li>
+<li>Markdown parsing and HTML generation</li>
+<li>Build automation and optimization</li>
+</ul>
+<p>With just a few hundred lines of Python, you can create a powerful tool tailored to your exact needs. The beauty of building your own SSG is complete control over every aspect of the generation process.</p>
+<p>Start simple, then gradually add features like:
+- Hot reload for development
+- Plugin system for extensibility
+- Theme support
+- Multi-language support
+- Search functionality</p>
+<p>Happy building! 🚀</p>
+    </div>
+</article>
+
+    </main>
+    
+    <footer class="site-footer">
+        <p>© 2024 My Technical Blog. Built with ❤️ and Python.</p>
+        <p class="footer-links">
+            <a href="https://github.com/yourusername">GitHub</a> •
+            <a href="https://twitter.com/yourusername">Twitter</a> •
+            <a href="/feed.xml">RSS Feed</a>
+        </p>
+    </footer>
+    
+    <!-- KaTeX JavaScript for math rendering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" 
+            integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" 
+            crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" 
+            integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" 
+            crossorigin="anonymous"></script>
+    
+    <!-- Mermaid for diagrams (only loaded if needed) -->
+    <script>
+        if (true === true) {
+            var script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js';
+            script.onload = function() {
+                mermaid.initialize({ 
+                    startOnLoad: true,
+                    theme: 'dark'
+                });
+            };
+            document.head.appendChild(script);
+        }
+    </script>
+    
+    <!-- Highlight.js for code blocks -->
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+    
+    <!-- Initialize KaTeX and highlight.js -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Initialize KaTeX if math is present
+            if (true === true || document.querySelector('.math')) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false},
+                        {left: "\\[", right: "\\]", display: true},
+                        {left: "\\(", right: "\\)", display: false}
+                    ],
+                    throwOnError: false,
+                    trust: true
+                });
+            }
+            
+            // Initialize syntax highlighting
+            hljs.highlightAll();
+        });
+        
+        // Theme toggle functionality
+        (function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const html = document.documentElement;
+            const hljsDark = document.getElementById('hljs-dark');
+            const hljsLight = document.getElementById('hljs-light');
+            
+            function setTheme(theme) {
+                html.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                
+                // Update highlight.js theme
+                if (theme === 'light') {
+                    hljsDark.disabled = true;
+                    hljsLight.disabled = false;
+                } else {
+                    hljsDark.disabled = false;
+                    hljsLight.disabled = true;
+                }
+                
+                // Update theme toggle button state
+                themeToggle.setAttribute('aria-label', 
+                    theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme');
+            }
+            
+            // Set initial theme
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            setTheme(savedTheme);
+            
+            // Toggle theme on button click
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                setTheme(newTheme);
+            });
+        })();
+    </script>
+</body>
+</html>

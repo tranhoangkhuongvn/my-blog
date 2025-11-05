@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Big O Notation with Mathematical Proofs - My Technical Blog</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css">
+
+    <!-- KaTeX CSS for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+          integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
+          crossorigin="anonymous">
+    
+    <!-- Highlight.js themes -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css" id="hljs-dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css" id="hljs-light" disabled>
+    
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="/my-blog/static/style.css">
+
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/my-blog/feed.xml">
+    
+    <!-- Theme initialization (prevents flash) -->
+    <script>
+        (function() {
+            const theme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="nav-container">
+            <div class="nav-brand">
+                <a href="/my-blog/">My Technical Blog</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/my-blog/">Home</a></li>
+                <li><a href="/my-blog/archive.html">Archive</a></li>
+                <li><a href="/my-blog/about.html">About</a></li>
+                <li><a href="/my-blog/feed.xml" class="rss-link">RSS</a></li>
+                <li>
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main class="main-content">
+        <article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Understanding Big O Notation with Mathematical Proofs</h1>
+        <div class="post-meta">
+            <time class="post-date">November 01, 2024</time>
+            <div class="post-tags"><span class="tag">algorithms</span> <span class="tag">mathematics</span> <span class="tag">computer-science</span></div>
+        </div>
+    </header>
+    
+    <div class="post-content">
+        <h1 id="understanding-big-o-notation">Understanding Big O Notation</h1>
+<p>When analyzing algorithms, we need a mathematical framework to describe their performance characteristics. Big O notation provides exactly that - a way to express the upper bound of an algorithm's time or space complexity.</p>
+<h2 id="mathematical-foundation">Mathematical Foundation</h2>
+<p>Big O notation describes the limiting behavior of a function when the argument tends towards infinity. Formally, we say that <span class="math math-inline">&#92;(f(n) = O(g(n))&#92;)</span> if there exist positive constants <span class="math math-inline">&#92;(c&#92;)</span> and <span class="math math-inline">&#92;(n_0&#92;)</span> such that:</p>
+<div class="math math-display">&#92;[f(n) \leq c \cdot g(n) \quad \text{for all } n \geq n_0&#92;]</div>
+
+<p>This mathematical definition tells us that <span class="math math-inline">&#92;(f(n)&#92;)</span> grows no faster than <span class="math math-inline">&#92;(g(n)&#92;)</span> for sufficiently large values of <span class="math math-inline">&#92;(n&#92;)</span>.</p>
+<h2 id="common-complexity-classes">Common Complexity Classes</h2>
+<p>Let's examine some common complexity classes and their characteristics:</p>
+<table>
+<thead>
+<tr>
+<th>Complexity</th>
+<th>Name</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="math math-inline">&#92;(O(1)&#92;)</span></td>
+<td>Constant</td>
+<td>Array access</td>
+</tr>
+<tr>
+<td><span class="math math-inline">&#92;(O(\log n)&#92;)</span></td>
+<td>Logarithmic</td>
+<td>Binary search</td>
+</tr>
+<tr>
+<td><span class="math math-inline">&#92;(O(n)&#92;)</span></td>
+<td>Linear</td>
+<td>Linear search</td>
+</tr>
+<tr>
+<td><span class="math math-inline">&#92;(O(n \log n)&#92;)</span></td>
+<td>Linearithmic</td>
+<td>Merge sort</td>
+</tr>
+<tr>
+<td><span class="math math-inline">&#92;(O(n^2)&#92;)</span></td>
+<td>Quadratic</td>
+<td>Bubble sort</td>
+</tr>
+<tr>
+<td><span class="math math-inline">&#92;(O(2^n)&#92;)</span></td>
+<td>Exponential</td>
+<td>Recursive Fibonacci</td>
+</tr>
+</tbody>
+</table>
+<h2 id="proving-merge-sort-is-on-log-n">Proving Merge Sort is O(n log n)</h2>
+<p>Let's prove that merge sort has time complexity <span class="math math-inline">&#92;(O(n \log n)&#92;)</span> using the Master Theorem.</p>
+<p>The recurrence relation for merge sort is:</p>
+<div class="math math-display">&#92;[T(n) = 2T\left(\frac{n}{2}\right) + O(n)&#92;]</div>
+
+<p>This means we divide the problem into 2 subproblems of size <span class="math math-inline">&#92;(n/2&#92;)</span>, and the merge step takes <span class="math math-inline">&#92;(O(n)&#92;)</span> time.</p>
+<p>Using the Master Theorem where <span class="math math-inline">&#92;(a = 2&#92;)</span>, <span class="math math-inline">&#92;(b = 2&#92;)</span>, and <span class="math math-inline">&#92;(f(n) = n&#92;)</span>:</p>
+<div class="math math-display">&#92;[\log_b a = \log_2 2 = 1&#92;]</div>
+
+<p>Since <span class="math math-inline">&#92;(f(n) = \Theta(n^{\log_b a})&#92;)</span>, we apply case 2 of the Master Theorem:</p>
+<div class="math math-display">&#92;[T(n) = \Theta(n^{\log_b a} \cdot \log n) = \Theta(n \log n)&#92;]</div>
+
+<h2 id="implementation-example">Implementation Example</h2>
+<p>Here's a Python implementation of merge sort to illustrate the algorithm:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">merge_sort</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sorts an array using the merge sort algorithm.</span>
+<span class="sd">    Time complexity: O(n log n)</span>
+<span class="sd">    Space complexity: O(n)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">arr</span>
+
+    <span class="c1"># Divide step</span>
+    <span class="n">mid</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">left</span> <span class="o">=</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">arr</span><span class="p">[:</span><span class="n">mid</span><span class="p">])</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">mid</span><span class="p">:])</span>
+
+    <span class="c1"># Conquer step (merge)</span>
+    <span class="k">return</span> <span class="n">merge</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">merge</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Merges two sorted arrays into one sorted array.&quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">right</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">left</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">right</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">left</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">right</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="c1"># Append remaining elements</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">left</span><span class="p">[</span><span class="n">i</span><span class="p">:])</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">right</span><span class="p">[</span><span class="n">j</span><span class="p">:])</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="c1"># Example usage</span>
+<span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">64</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">90</span><span class="p">]</span>
+<span class="n">sorted_numbers</span> <span class="o">=</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sorted array: </span><span class="si">{</span><span class="n">sorted_numbers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="visualizing-algorithm-complexity">Visualizing Algorithm Complexity</h2>
+<p>We can visualize how different complexity classes grow with input size:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">constant</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">logarithmic</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">linear</span> <span class="o">=</span> <span class="n">n</span>
+<span class="n">linearithmic</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">quadratic</span> <span class="o">=</span> <span class="n">n</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">constant</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;O(1)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">logarithmic</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;O(log n)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">linear</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;O(n)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">linearithmic</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;O(n log n)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">quadratic</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;O(n²)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Input Size (n)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Operations&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Growth Rates of Common Complexity Classes&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<h2 id="space-complexity-considerations">Space Complexity Considerations</h2>
+<p>While we often focus on time complexity, space complexity is equally important. For merge sort, the space complexity is <span class="math math-inline">&#92;(O(n)&#92;)</span> because we need to create temporary arrays during the merge process.</p>
+<p>Compare this with heap sort, which has the same time complexity <span class="math math-inline">&#92;(O(n \log n)&#92;)</span> but only requires <span class="math math-inline">&#92;(O(1)&#92;)</span> additional space, making it more memory-efficient for large datasets.</p>
+<h2 id="amortized-analysis">Amortized Analysis</h2>
+<p>Some algorithms have varying performance for individual operations, but guarantee good average performance. Consider a dynamic array that doubles in size when full:</p>
+<ul>
+<li>Individual insertions: Usually <span class="math math-inline">&#92;(O(1)&#92;)</span>, occasionally <span class="math math-inline">&#92;(O(n)&#92;)</span> when resizing</li>
+<li>Amortized complexity: <span class="math math-inline">&#92;(O(1)&#92;)</span> per insertion</li>
+</ul>
+<p>The total cost for <span class="math math-inline">&#92;(n&#92;)</span> insertions is:</p>
+<div class="math math-display">&#92;[\sum_{i=0}^{\log n} 2^i = 2^{\log n + 1} - 1 = 2n - 1 = O(n)&#92;]</div>
+
+<p>Therefore, the amortized cost per insertion is <span class="math math-inline">&#92;(O(n)/n = O(1)&#92;)</span>.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Understanding Big O notation and complexity analysis is crucial for writing efficient algorithms. By mastering these concepts, you can:</p>
+<ol>
+<li>Choose appropriate algorithms for your specific use case</li>
+<li>Predict performance characteristics before implementation</li>
+<li>Identify bottlenecks in existing code</li>
+<li>Make informed trade-offs between time and space complexity</li>
+</ol>
+<p>Remember that Big O notation describes worst-case behavior. In practice, algorithms often perform better than their theoretical bounds suggest, especially with real-world data that may have favorable properties.</p>
+    </div>
+</article>
+
+    </main>
+    
+    <footer class="site-footer">
+        <p>© 2024 My Technical Blog. Built with ❤️ and Python.</p>
+        <p class="footer-links">
+            <a href="https://github.com/yourusername">GitHub</a> •
+            <a href="https://twitter.com/yourusername">Twitter</a> •
+            <a href="/feed.xml">RSS Feed</a>
+        </p>
+    </footer>
+    
+    <!-- KaTeX JavaScript for math rendering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" 
+            integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" 
+            crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" 
+            integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" 
+            crossorigin="anonymous"></script>
+    
+    <!-- Mermaid for diagrams (only loaded if needed) -->
+    <script>
+        if (false === true) {
+            var script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js';
+            script.onload = function() {
+                mermaid.initialize({ 
+                    startOnLoad: true,
+                    theme: 'dark'
+                });
+            };
+            document.head.appendChild(script);
+        }
+    </script>
+    
+    <!-- Highlight.js for code blocks -->
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+    
+    <!-- Initialize KaTeX and highlight.js -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Initialize KaTeX if math is present
+            if (true === true || document.querySelector('.math')) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false},
+                        {left: "\\[", right: "\\]", display: true},
+                        {left: "\\(", right: "\\)", display: false}
+                    ],
+                    throwOnError: false,
+                    trust: true
+                });
+            }
+            
+            // Initialize syntax highlighting
+            hljs.highlightAll();
+        });
+        
+        // Theme toggle functionality
+        (function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const html = document.documentElement;
+            const hljsDark = document.getElementById('hljs-dark');
+            const hljsLight = document.getElementById('hljs-light');
+            
+            function setTheme(theme) {
+                html.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                
+                // Update highlight.js theme
+                if (theme === 'light') {
+                    hljsDark.disabled = true;
+                    hljsLight.disabled = false;
+                } else {
+                    hljsDark.disabled = false;
+                    hljsLight.disabled = true;
+                }
+                
+                // Update theme toggle button state
+                themeToggle.setAttribute('aria-label', 
+                    theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme');
+            }
+            
+            // Set initial theme
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            setTheme(savedTheme);
+            
+            // Toggle theme on button click
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                setTheme(newTheme);
+            });
+        })();
+    </script>
+</body>
+</html>

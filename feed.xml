@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <rss version="2.0">
+        <channel>
+            <title>My Technical Blog</title>
+            <link>https://tranhoangkhuongvn.github.io/my-blog</link>
+            <description>A blog about programming, mathematics, and technology</description>
+            <language>en-us</language>
+            
+        <item>
+            <title>Advanced Mathematics with KaTeX</title>
+            <link>https://tranhoangkhuongvn.github.io/my-blog/posts/advanced-mathematics-with-katex.html</link>
+            <description><![CDATA[Demonstrating advanced mathematical notation and equations using KaTeX in our static site generator]]></description>
+            <pubDate>Mon, 04 Nov 2024 00:00:00 +0000</pubDate>
+            <guid>https://tranhoangkhuongvn.github.io/my-blog/posts/advanced-mathematics-with-katex.html</guid>
+        </item>
+        
+        <item>
+            <title>Building a Static Site Generator from Scratch</title>
+            <link>https://tranhoangkhuongvn.github.io/my-blog/posts/building-a-static-site-generator-from-scratch.html</link>
+            <description><![CDATA[Learn how to build your own static site generator with support for Markdown, LaTeX math, and diagrams]]></description>
+            <pubDate>Sun, 03 Nov 2024 00:00:00 +0000</pubDate>
+            <guid>https://tranhoangkhuongvn.github.io/my-blog/posts/building-a-static-site-generator-from-scratch.html</guid>
+        </item>
+        
+        <item>
+            <title>Understanding Big O Notation with Mathematical Proofs</title>
+            <link>https://tranhoangkhuongvn.github.io/my-blog/posts/understanding-big-o-notation-with-mathematical-proofs.html</link>
+            <description><![CDATA[A deep dive into algorithm complexity analysis with mathematical proofs and practical examples]]></description>
+            <pubDate>Fri, 01 Nov 2024 00:00:00 +0000</pubDate>
+            <guid>https://tranhoangkhuongvn.github.io/my-blog/posts/understanding-big-o-notation-with-mathematical-proofs.html</guid>
+        </item>
+        
+        </channel>
+    </rss>
+    

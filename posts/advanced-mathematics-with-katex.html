@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Mathematics with KaTeX - My Technical Blog</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css">
+
+    <!-- KaTeX CSS for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+          integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
+          crossorigin="anonymous">
+    
+    <!-- Highlight.js themes -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css" id="hljs-dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css" id="hljs-light" disabled>
+    
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="/my-blog/static/style.css">
+
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/my-blog/feed.xml">
+    
+    <!-- Theme initialization (prevents flash) -->
+    <script>
+        (function() {
+            const theme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="nav-container">
+            <div class="nav-brand">
+                <a href="/my-blog/">My Technical Blog</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/my-blog/">Home</a></li>
+                <li><a href="/my-blog/archive.html">Archive</a></li>
+                <li><a href="/my-blog/about.html">About</a></li>
+                <li><a href="/my-blog/feed.xml" class="rss-link">RSS</a></li>
+                <li>
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main class="main-content">
+        <article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Advanced Mathematics with KaTeX</h1>
+        <div class="post-meta">
+            <time class="post-date">November 04, 2024</time>
+            <div class="post-tags"><span class="tag">mathematics</span> <span class="tag">latex</span> <span class="tag">tutorial</span></div>
+        </div>
+    </header>
+    
+    <div class="post-content">
+        <h1 id="advanced-mathematics-with-katex">Advanced Mathematics with KaTeX</h1>
+<p>This post demonstrates the full power of mathematical typesetting in our static site generator. We can render everything from simple equations to complex mathematical proofs.</p>
+<h2 id="basic-mathematics">Basic Mathematics</h2>
+<p>Inline math like <span class="math math-inline">&#92;(a^2 + b^2 = c^2&#92;)</span> flows naturally within text. For more prominent equations, use display mode:</p>
+<div class="math math-display">&#92;[E = mc^2&#92;]</div>
+
+<h2 id="calculus">Calculus</h2>
+<h3 id="derivatives">Derivatives</h3>
+<p>The derivative of <span class="math math-inline">&#92;(f(x)&#92;)</span> with respect to <span class="math math-inline">&#92;(x&#92;)</span> is:</p>
+<div class="math math-display">&#92;[f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}&#92;]</div>
+
+<h3 id="integrals">Integrals</h3>
+<p>The fundamental theorem of calculus states:</p>
+<div class="math math-display">&#92;[\int_a^b f(x)\,dx = F(b) - F(a)&#92;]</div>
+
+<p>Where <span class="math math-inline">&#92;(F&#92;)</span> is an antiderivative of <span class="math math-inline">&#92;(f&#92;)</span>.</p>
+<h2 id="linear-algebra">Linear Algebra</h2>
+<h3 id="matrices">Matrices</h3>
+<p>We can display matrices:</p>
+<div class="math math-display">&#92;[A = \begin{pmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} & \cdots & a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{m1} & a_{m2} & \cdots & a_{mn}
+\end{pmatrix}&#92;]</div>
+
+<h3 id="determinants">Determinants</h3>
+<p>The determinant of a 2×2 matrix:</p>
+<div class="math math-display">&#92;[\det(A) = \begin{vmatrix}
+a & b \\
+c & d
+\end{vmatrix} = ad - bc&#92;]</div>
+
+<h2 id="complex-analysis">Complex Analysis</h2>
+<p>Euler's formula, one of the most beautiful equations in mathematics:</p>
+<div class="math math-display">&#92;[e^{i\theta} = \cos\theta + i\sin\theta&#92;]</div>
+
+<p>Leading to Euler's identity:</p>
+<div class="math math-display">&#92;[e^{i\pi} + 1 = 0&#92;]</div>
+
+<h2 id="probability-and-statistics">Probability and Statistics</h2>
+<h3 id="normal-distribution">Normal Distribution</h3>
+<p>The probability density function of the normal distribution:</p>
+<div class="math math-display">&#92;[f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2}&#92;]</div>
+
+<h3 id="bayes-theorem">Bayes' Theorem</h3>
+<div class="math math-display">&#92;[P(A|B) = \frac{P(B|A)P(A)}{P(B)}&#92;]</div>
+
+<h2 id="fourier-series">Fourier Series</h2>
+<p>Any periodic function can be represented as:</p>
+<div class="math math-display">&#92;[f(x) = \frac{a_0}{2} + \sum_{n=1}^{\infty} \left[ a_n \cos\left(\frac{2\pi nx}{L}\right) + b_n \sin\left(\frac{2\pi nx}{L}\right) \right]&#92;]</div>
+
+<p>Where the coefficients are:</p>
+<div class="math math-display">&#92;[a_n = \frac{2}{L} \int_0^L f(x) \cos\left(\frac{2\pi nx}{L}\right) dx&#92;]</div>
+
+<div class="math math-display">&#92;[b_n = \frac{2}{L} \int_0^L f(x) \sin\left(\frac{2\pi nx}{L}\right) dx&#92;]</div>
+
+<h2 id="quantum-mechanics">Quantum Mechanics</h2>
+<p>The Schrödinger equation:</p>
+<div class="math math-display">&#92;[i\hbar\frac{\partial}{\partial t}\Psi(x,t) = \hat{H}\Psi(x,t)&#92;]</div>
+
+<p>Where <span class="math math-inline">&#92;(\hat{H}&#92;)</span> is the Hamiltonian operator:</p>
+<div class="math math-display">&#92;[\hat{H} = -\frac{\hbar^2}{2m}\nabla^2 + V(x)&#92;]</div>
+
+<h2 id="number-theory">Number Theory</h2>
+<h3 id="the-riemann-hypothesis">The Riemann Hypothesis</h3>
+<p>The Riemann zeta function:</p>
+<div class="math math-display">&#92;[\zeta(s) = \sum_{n=1}^{\infty} \frac{1}{n^s} = \prod_{p \text{ prime}} \frac{1}{1-p^{-s}}&#92;]</div>
+
+<p>The hypothesis states that all non-trivial zeros of <span class="math math-inline">&#92;(\zeta(s)&#92;)</span> have real part <span class="math math-inline">&#92;(\frac{1}{2}&#92;)</span>.</p>
+<h2 id="algorithm-complexity">Algorithm Complexity</h2>
+<h3 id="recurrence-relations">Recurrence Relations</h3>
+<p>For merge sort:</p>
+<div class="math math-display">&#92;[T(n) = \begin{cases}
+\Theta(1) & \text{if } n = 1 \\
+2T(n/2) + \Theta(n) & \text{if } n > 1
+\end{cases}&#92;]</div>
+
+<p>Solution using the Master Theorem:</p>
+<div class="math math-display">&#92;[T(n) = \Theta(n \log n)&#92;]</div>
+
+<h2 id="advanced-operators">Advanced Operators</h2>
+<h3 id="gradient-divergence-and-curl">Gradient, Divergence, and Curl</h3>
+<p>The gradient of a scalar field <span class="math math-inline">&#92;(\phi&#92;)</span>:</p>
+<div class="math math-display">&#92;[\nabla \phi = \frac{\partial \phi}{\partial x}\mathbf{i} + \frac{\partial \phi}{\partial y}\mathbf{j} + \frac{\partial \phi}{\partial z}\mathbf{k}&#92;]</div>
+
+<p>The divergence of a vector field <span class="math math-inline">&#92;(\mathbf{F}&#92;)</span>:</p>
+<div class="math math-display">&#92;[\nabla \cdot \mathbf{F} = \frac{\partial F_x}{\partial x} + \frac{\partial F_y}{\partial y} + \frac{\partial F_z}{\partial z}&#92;]</div>
+
+<p>The curl of a vector field:</p>
+<div class="math math-display">&#92;[\nabla \times \mathbf{F} = \begin{vmatrix}
+\mathbf{i} & \mathbf{j} & \mathbf{k} \\
+\frac{\partial}{\partial x} & \frac{\partial}{\partial y} & \frac{\partial}{\partial z} \\
+F_x & F_y & F_z
+\end{vmatrix}&#92;]</div>
+
+<h2 id="chemical-equations">Chemical Equations</h2>
+<p>While not strictly mathematics, we can also represent chemical formulas:</p>
+<p>Water: <span class="math math-inline">&#92;(\text{H}_2\text{O}&#92;)</span></p>
+<p>Sulfuric acid: <span class="math math-inline">&#92;(\text{H}_2\text{SO}_4&#92;)</span></p>
+<p>Photosynthesis: <span class="math math-inline">&#92;(6\text{CO}<em 12="12">2 + 6\text{H}_2\text{O} \xrightarrow{\text{light}} \text{C}_6\text{H}</em>_2&#92;)</span>}\text{O}_6 + 6\text{O</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>KaTeX provides excellent support for mathematical typesetting in web browsers. With our static site generator, you can write complex mathematical content that renders beautifully and loads quickly, making it perfect for academic blogs, educational content, and technical documentation.</p>
+<p>The combination of Markdown for prose and LaTeX for mathematics creates a powerful authoring environment for technical content.</p>
+    </div>
+</article>
+
+    </main>
+    
+    <footer class="site-footer">
+        <p>© 2024 My Technical Blog. Built with ❤️ and Python.</p>
+        <p class="footer-links">
+            <a href="https://github.com/yourusername">GitHub</a> •
+            <a href="https://twitter.com/yourusername">Twitter</a> •
+            <a href="/feed.xml">RSS Feed</a>
+        </p>
+    </footer>
+    
+    <!-- KaTeX JavaScript for math rendering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" 
+            integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" 
+            crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" 
+            integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" 
+            crossorigin="anonymous"></script>
+    
+    <!-- Mermaid for diagrams (only loaded if needed) -->
+    <script>
+        if (false === true) {
+            var script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js';
+            script.onload = function() {
+                mermaid.initialize({ 
+                    startOnLoad: true,
+                    theme: 'dark'
+                });
+            };
+            document.head.appendChild(script);
+        }
+    </script>
+    
+    <!-- Highlight.js for code blocks -->
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+    
+    <!-- Initialize KaTeX and highlight.js -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Initialize KaTeX if math is present
+            if (true === true || document.querySelector('.math')) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false},
+                        {left: "\\[", right: "\\]", display: true},
+                        {left: "\\(", right: "\\)", display: false}
+                    ],
+                    throwOnError: false,
+                    trust: true
+                });
+            }
+            
+            // Initialize syntax highlighting
+            hljs.highlightAll();
+        });
+        
+        // Theme toggle functionality
+        (function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const html = document.documentElement;
+            const hljsDark = document.getElementById('hljs-dark');
+            const hljsLight = document.getElementById('hljs-light');
+            
+            function setTheme(theme) {
+                html.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                
+                // Update highlight.js theme
+                if (theme === 'light') {
+                    hljsDark.disabled = true;
+                    hljsLight.disabled = false;
+                } else {
+                    hljsDark.disabled = false;
+                    hljsLight.disabled = true;
+                }
+                
+                // Update theme toggle button state
+                themeToggle.setAttribute('aria-label', 
+                    theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme');
+            }
+            
+            // Set initial theme
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            setTheme(savedTheme);
+            
+            // Toggle theme on button click
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                setTheme(newTheme);
+            });
+        })();
+    </script>
+</body>
+</html>
