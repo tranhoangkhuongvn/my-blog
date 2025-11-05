@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Build output
+output/
+dist/
+build/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Deployment
+.netlify/
+.vercel/
+node_modules/
+
+# Local config
+config.local.py
+*.log
+*.pid
+
+# Temporary files
+*.tmp
+.temp/
+.cache/

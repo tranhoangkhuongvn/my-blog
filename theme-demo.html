@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theme Toggle Demo</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .demo-container {
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 0.5rem 0;
+        }
+        .feature-list li:before {
+            content: "✅ ";
+        }
+        code {
+            background: #f4f4f4;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+        }
+        .screenshots {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .screenshot {
+            border: 1px solid #ddd;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .icon-preview {
+            display: inline-flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎨 Theme Toggle Feature Added!</h1>
+    
+    <div class="demo-container">
+        <h2>What's New</h2>
+        <ul class="feature-list">
+            <li>Beautiful sun/moon icon toggle button in the navigation bar</li>
+            <li>Smooth transitions between light and dark themes</li>
+            <li>Theme preference saved in browser (localStorage)</li>
+            <li>No page refresh required - instant switching</li>
+            <li>Responsive design - works on mobile and desktop</li>
+            <li>Syntax highlighting adapts to theme</li>
+            <li>Math equations look great in both themes</li>
+        </ul>
+    </div>
+
+    <div class="demo-container">
+        <h2>How It Works</h2>
+        <ol>
+            <li>Click the sun ☀️ icon (in dark mode) to switch to light theme</li>
+            <li>Click the moon 🌙 icon (in light mode) to switch to dark theme</li>
+            <li>Your preference is automatically saved</li>
+            <li>The site will remember your choice on next visit</li>
+        </ol>
+        
+        <div class="icon-preview">
+            <div>
+                <strong>Dark Mode:</strong> Shows sun icon ☀️
+            </div>
+            <div>
+                <strong>Light Mode:</strong> Shows moon icon 🌙
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-container">
+        <h2>Theme Features</h2>
+        
+        <div class="screenshots">
+            <div class="screenshot">
+                <h3>🌙 Dark Theme</h3>
+                <ul style="text-align: left">
+                    <li>Easy on the eyes at night</li>
+                    <li>High contrast for readability</li>
+                    <li>Professional developer aesthetic</li>
+                    <li>GitHub-inspired colors</li>
+                </ul>
+            </div>
+            <div class="screenshot">
+                <h3>☀️ Light Theme</h3>
+                <ul style="text-align: left">
+                    <li>Clean and bright</li>
+                    <li>Perfect for daytime reading</li>
+                    <li>Crisp text on white background</li>
+                    <li>Familiar reading experience</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-container">
+        <h2>Technical Details</h2>
+        <ul>
+            <li><strong>CSS Variables:</strong> Theme colors defined as CSS custom properties</li>
+            <li><strong>JavaScript:</strong> Minimal JS for toggle functionality (< 50 lines)</li>
+            <li><strong>LocalStorage:</strong> Saves user preference persistently</li>
+            <li><strong>No Flash:</strong> Theme loads before page render to prevent flash</li>
+            <li><strong>Accessibility:</strong> Proper ARIA labels for screen readers</li>
+            <li><strong>Performance:</strong> CSS transitions for smooth animation</li>
+        </ul>
+    </div>
+
+    <div class="demo-container">
+        <h2>Code Example</h2>
+        <p>The theme is controlled by a simple data attribute:</p>
+        <pre><code>&lt;html data-theme="dark"&gt; or &lt;html data-theme="light"&gt;</code></pre>
+        
+        <p>CSS variables automatically adjust based on theme:</p>
+        <pre><code>[data-theme="dark"] {
+    --bg-primary: #0d1117;
+    --text-primary: #c9d1d9;
+}
+
+[data-theme="light"] {
+    --bg-primary: #ffffff;
+    --text-primary: #24292f;
+}</code></pre>
+    </div>
+
+    <div class="demo-container" style="background: #f0f8ff; border-color: #0969da;">
+        <h2>✨ Ready to Use!</h2>
+        <p>Your blog now has a fully functional theme toggle that:</p>
+        <ul class="feature-list">
+            <li>Works immediately without any additional setup</li>
+            <li>Provides a great user experience</li>
+            <li>Looks professional and polished</li>
+            <li>Respects user preferences</li>
+            <li>Works across all pages</li>
+        </ul>
+    </div>
+</body>
+</html>
